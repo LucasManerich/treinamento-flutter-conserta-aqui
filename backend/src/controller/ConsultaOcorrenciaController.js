@@ -21,7 +21,7 @@ module.exports = {
    *    ]
    *
    */
-  getPendentes(request, response) {
+  listaOcorrencias(request, response) {
     const ocorrencias = OcorrenciaRepository.getOcorrencias()
     return response.json(ocorrencias);
   },
