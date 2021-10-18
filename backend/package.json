@@ -1,0 +1,24 @@
+{
+  "name": "conserta-aqui-backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Lucas Manerich",
+  "license": "MIT",
+  "scripts": {
+    "dev": "nodemon --ignore *.json ./src/index.js",
+    "start": "node ./src/index.js",
+    "docs": "apidoc -f ./src/controller -o docs"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "helmet": "^4.6.0",
+    "lowdb": "1.0.0"
+  },
+  "devDependencies": {
+    "apidoc": "^0.50.0",
+    "nodemon": "^2.0.13"
+  }
+}
