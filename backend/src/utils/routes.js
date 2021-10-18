@@ -4,7 +4,7 @@ const ManutencaoOcorrenciaController = require('../controller/ManutencaoOcorrenc
 
 const routes = Router();
 
-routes.get('/ocorrencia', ConsultaOcorrenciaController.getPendentes);
+routes.get('/ocorrencia', ConsultaOcorrenciaController.listaOcorrencias);
 routes.post('/ocorrencia', ManutencaoOcorrenciaController.novaOcorrencia);
 
 module.exports = routes;
