@@ -26,6 +26,8 @@ Todas as imagens do layout da aplicação estão na pasta `layout`, as cores uti
 - ![#EDEDED](https://via.placeholder.com/15/EDEDED/000000?text=+) `RGB(237, 237, 237)`
 - ![#F7F8FA](https://via.placeholder.com/15/F7F8FA/000000?text=+) `RGB(247, 248, 250)`
 
+A fonte utilizada é a `Inter`, está disponível para Download gratuitamente no [Google Fonts](https://fonts.google.com/specimen/Inter)
+
 ## 🚀 Como executar
 
 - Clone o repositório
