@@ -58,6 +58,9 @@ class ItemListaOcorrencias extends StatelessWidget {
                     ),
                     SizedBox(height: 10),
                     TextButton(
+                      style: ButtonStyle(
+                        padding: MaterialStateProperty.all(EdgeInsets.symmetric(horizontal: 0))
+                      ),
                       onPressed: () {}, 
                       child: Row(
                         children: [
@@ -69,7 +72,13 @@ class ItemListaOcorrencias extends StatelessWidget {
                   ],
                 ),
               ),
-              Text("imagem")
+              ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Image.network(
+                  'https://dinamicarpneus.com.br/sites/default/files/imagem/2019-09/foto-detalhe-buraco-estrada.jpg', 
+                  width: 120,
+                ),
+              )
             ],
           ),
         )
