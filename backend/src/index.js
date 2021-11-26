@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const dotEnv = require('dotenv')
 const routes = require('./utils/routes');
+const path = require("path");
 
 dotEnv.config()
 
@@ -10,6 +11,9 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+app.use("/imagem", express.static(path.resolve(__dirname, "..", "uploads")));
 app.use(routes);
 
 const porta = process.env.PORTA || 3131;

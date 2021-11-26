@@ -1,3 +1,4 @@
+const fs = require('fs');
 const OcorrenciaSituacao = require("../enum/OcorrenciaSituacao");
 const OcorrenciaRepository = require("../repository/OcorrenciaRepository");
 
@@ -7,6 +8,7 @@ module.exports = {
    * @apiGroup Ocorrências
    * @apiDescription Endpoint de inclusão de novas ocorrências
    * 
+   * @apiSuccess {File}   imagem     Imagem da Ocorrência
    * @apiSuccess {String} descricao  Descrição
    * @apiSuccess {String} latitude   Latitude da Ocorrência
    * @apiSuccess {String} longitude  Longitude da Ocorrência
@@ -19,10 +21,12 @@ module.exports = {
    *      "situacao": "PENDENTE",
    *      "latitude": 0,
    *      "longitude": 0,
-   *      "data": "18/10/2021"
+   *      "data": "18/10/2021",
+   *      "imagem": "123109321.jpg"
    *    }
    */
   novaOcorrencia(request, response) {
+    const { filename } = request.file;
     const { descricao, latitude, longitude } = request.body;
     
     if(!descricao) {
@@ -33,7 +37,7 @@ module.exports = {
       return response.status(500).json({ msg: 'Coordenadas não informadas' })
     }
 
-    const registro = OcorrenciaRepository.insereOcorrencia(descricao, latitude, longitude);
+    const registro = OcorrenciaRepository.insereOcorrencia(descricao, latitude, longitude, filename);
     return response.json(registro);
   },
   

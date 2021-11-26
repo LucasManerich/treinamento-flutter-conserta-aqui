@@ -21,7 +21,7 @@ const OcorrenciaRepository = {
   /**
    * Insere uma ocorrencia na base de dados
    */
-  insereOcorrencia(descricao, latitude, longitude) {
+  insereOcorrencia(descricao, latitude, longitude, imagem) {
     // busca a data atual
     const data = new Date().toLocaleDateString('pt-br');
     
@@ -30,6 +30,7 @@ const OcorrenciaRepository = {
       descricao: descricao,
       latitude: latitude,
       longitude: longitude,
+      imagem: imagem,
       situacao: OcorrenciaSituacao.Pendente,
       data: data, 
     }
