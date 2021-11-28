@@ -1,8 +1,12 @@
+import 'dart:typed_data';
+
 import 'package:conserta_aqui/utils/ColorUtil.dart';
 import 'package:conserta_aqui/views/components/DescricaoOcorrencia.dart';
 import 'package:conserta_aqui/views/components/IndicadorEtapa.dart';
 import 'package:conserta_aqui/views/components/MapaLocalizacao.dart';
 import 'package:conserta_aqui/views/components/UploadImagem.dart';
+import 'package:dio/dio.dart';
+import 'package:dio/native_imp.dart';
 import 'package:flutter/material.dart';
 
 class IncluirOcorrenciaView extends StatefulWidget {
@@ -14,7 +18,14 @@ class IncluirOcorrenciaView extends StatefulWidget {
 
 class _IncluirOcorrenciaViewState extends State<IncluirOcorrenciaView> {
 
+  DioForNative api = DioForNative(BaseOptions(baseUrl: 'http://10.5.101.248:3131'));
+  
   int etapaAtual = 1;
+
+  double? latitude;
+  double? longitude;
+  Uint8List? imagem;
+  String? descricao;
 
   String getTituloEtapa() {
     switch(etapaAtual) {
@@ -28,14 +39,45 @@ class _IncluirOcorrenciaViewState extends State<IncluirOcorrenciaView> {
     return '';
   }
 
+  Future<void> processaInclusao() async {
+    FormData formData = FormData.fromMap({
+      "descricao": this.descricao,
+      "latitude": this.latitude,
+      "longitude": this.longitude,
+      "imagem": await MultipartFile.fromBytes(
+        List.from(this.imagem!),
+        filename: 'imagem.jpg'
+      )
+    });
+
+    Response response = await this.api.post('/ocorrencia', data: formData);
+
+    if(response.statusCode == 200) {
+      Navigator.of(context).pop();
+    }
+  }
+
   Widget getWidgetEtapaAtual() {
     switch(etapaAtual) {
       case 1:
-        return MapaLocalizacao();
+        return MapaLocalizacao(
+          onSelecionaLocalizacao: (latitude, longitude) {
+            this.latitude = latitude;
+            this.longitude = longitude;
+          },
+        );
       case 2:
-        return UploadImagem();
+        return UploadImagem(
+          onSelecionaImagem: (imagem) {
+            this.imagem = imagem;
+          },
+        );
       case 3:
-        return DescricaoOcorrencia();
+        return DescricaoOcorrencia(
+          onDigitaDescricao: (descricao) {
+            this.descricao = descricao;
+          },
+        );
     }
     return Container();
   }
@@ -77,7 +119,11 @@ class _IncluirOcorrenciaViewState extends State<IncluirOcorrenciaView> {
                                 size: 32,
                               ),
                             ),
-                            Text('Icone')
+                            Icon(
+                              Icons.person_outline,
+                              color: ColorUtil.COR_01,
+                              size: 26,
+                            )
                           ],
                         ),
                         SizedBox(height: 20),
@@ -132,6 +178,7 @@ class _IncluirOcorrenciaViewState extends State<IncluirOcorrenciaView> {
                           this.etapaAtual++;
                         } else {
                           // processamento da inclusão
+                          this.processaInclusao();
                         }
                       });
                     },

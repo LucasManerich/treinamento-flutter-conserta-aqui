@@ -3,8 +3,19 @@ import 'package:flutter/material.dart';
 
 class ItemListaOcorrencias extends StatelessWidget {
   final String? descricao;
+  final String? data;
+  final double? latitude;
+  final double? longitude;
+  final String? imagem;
 
-  const ItemListaOcorrencias({ Key? key, this.descricao }) : super(key: key);
+  const ItemListaOcorrencias({ 
+    Key? key, 
+    this.descricao,
+    this.data,
+    this.latitude,
+    this.longitude,
+    this.imagem,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +60,7 @@ class ItemListaOcorrencias extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      "06/11/2021",
+                      "${this.data}",
                       style: TextStyle(
                         color: ColorUtil.COR_02,
                         fontSize: 16,
@@ -75,7 +86,7 @@ class ItemListaOcorrencias extends StatelessWidget {
               ClipRRect(
                 borderRadius: BorderRadius.circular(10),
                 child: Image.network(
-                  'https://dinamicarpneus.com.br/sites/default/files/imagem/2019-09/foto-detalhe-buraco-estrada.jpg', 
+                  "${this.imagem}", 
                   width: 120,
                 ),
               )

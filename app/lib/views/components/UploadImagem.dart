@@ -6,7 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class UploadImagem extends StatefulWidget {
-  const UploadImagem({ Key? key }) : super(key: key);
+  final Function onSelecionaImagem;
+  
+  const UploadImagem({ 
+    Key? key,
+    required this.onSelecionaImagem,
+  }) : super(key: key);
 
   @override
   _UploadImagemState createState() => _UploadImagemState();
@@ -36,7 +41,20 @@ class _UploadImagemState extends State<UploadImagem> {
         Image.memory(this.imagem!, height: 200)
       ];
     }
-  } 
+  }
+
+  Future<void> abrirGaleriaOuCamera(ImageSource source) async {
+    final ImagePicker _picker = ImagePicker();
+    final XFile? image = await _picker.pickImage(source: source);
+
+    if(image != null) {
+      Uint8List dadosImagem = await image.readAsBytes();
+      setState(() {
+        this.widget.onSelecionaImagem(dadosImagem);
+        this.imagem = dadosImagem;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,15 +67,51 @@ class _UploadImagemState extends State<UploadImagem> {
         dashPattern: [ 5 ],
         child: GestureDetector(
           onTap: () async {
-            final ImagePicker _picker = ImagePicker();
-            final XFile? image = await _picker.pickImage(source: ImageSource.camera);
-
-            if(image != null) {
-              Uint8List dadosImagem = await image.readAsBytes();
-              setState(() {
-                this.imagem = dadosImagem;
-              });
-            }
+            showModalBottomSheet(
+              context: context, 
+              builder: (context) {
+                return Container(
+                  height: 200,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () async {
+                            await this.abrirGaleriaOuCamera(ImageSource.gallery);
+                            Navigator.of(context).pop();
+                          },
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.camera_alt, size: 60),
+                              Text('Câmera')
+                            ],
+                          ),
+                        ),
+                      ),
+                      Text('Ou'),
+                       Expanded(
+                        child: GestureDetector(
+                          onTap: () async {
+                            await this.abrirGaleriaOuCamera(ImageSource.gallery);
+                            Navigator.of(context).pop();
+                          },
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.photo_size_select_actual_rounded, size: 60),
+                              Text('Galeria')
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            );
           },
           child: Container(
             height: 200,
